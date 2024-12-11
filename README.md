@@ -23,7 +23,7 @@ pip install -r requirements.txt
 
 ### Preparation
 
-1. Both datasets (2WikiMQA and MuSiQue) used in our experiments have been preprocessed and stored under `data`. 
+1. For convenience, we include a very small subset (500 examples for training and 100 examples for testing) from MuSiQue to enable running a small demo. The data have been preprocessed and stored under `data`. To test the entire dataset, please construct training data by following the **Preparation** and **Training Data Construction** parts in [EfficientRAG](https://github.com/nil-zhuang/efficientrag-official).
 
 2. Download the retriever model [Contriever](https://huggingface.co/facebook/contriever-msmarco) and base model [DeBERTa](https://huggingface.co/microsoft/deberta-v3-large), put them under `model_cache`
 
