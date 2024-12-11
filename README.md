@@ -1,4 +1,4 @@
-# EfficientRAG-Pro CS291A Project
+# EfficientRAG-With-Pruning CS291A Project
 This is a final project of UCSB CS291A 2024 Fall.
 
 To run this project, you need to set up following the original EfficientRAG.
