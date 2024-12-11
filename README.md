@@ -1,4 +1,4 @@
-![image](https://github.com/user-attachments/assets/801e2610-fd15-4656-8a1d-a1e3dc99a41c)# EfficientRAG-Pro CS291A Project
+# EfficientRAG-Pro CS291A Project
 This is a final project of UCSB CS291A 2024 Fall.
 
 To run this project, you need to set up following the original Efficient RAG 
