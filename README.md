@@ -1,5 +1,7 @@
-# EfficientRAG-Pro CS291A Project
+![image](https://github.com/user-attachments/assets/801e2610-fd15-4656-8a1d-a1e3dc99a41c)# EfficientRAG-Pro CS291A Project
+This is a final project of UCSB CS291A 2024 Fall.
 
+To run this project, you need to set up following the original Efficient RAG 
 
 ## Setup
 
@@ -27,9 +29,10 @@ pip install -r requirements.txt
 
 3. Deploy [LLaMA-3-8B-Instruct](https://huggingface.co/meta-llama/Meta-Llama-3-70B-Instruct) with [vLLM](https://github.com/vllm-project/vllm) framework, and configure it in `src/language_models/llama.py`
 
-
 ## Training
 
+We will use the MuSiQue dataset as an example. You could train on 2WikiMQA in the same way.
+        
 Training Filter model
 
 ```bash
@@ -73,10 +76,17 @@ Retrieve results
 ```bash
 python src/evaluation/retrieve.py --fpath <<MODEL_INFERENCE_RESULT>>
 ```
+
+Pruning
+```bash
+python src/textrank.py --fpath <<MODEL_INFERENCE_RESULT>> --top_k 10
+```
+You can try different top_k to control the pruning proportion.
+
 Correctness
 ```bash
 python src/evaluation/correctness.py \
-    --fpath <<MODEL_INFERENCE_RESULT>>
+    --fpath <<MODEL_INFERENCE_RESULT_AFTER_PRUNING>>
     --model llama-8b-instruct
 ```
 
