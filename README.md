@@ -63,7 +63,7 @@ python src/efficientrag_retrieve.py \
     --topk 10 \
 ```
 
-Text Rank Pruning
+TextRank Pruning
 
 ```bash
 python src/textrank.py --fpath <<MODEL_INFERENCE_RESULT>> --top_k 10
@@ -82,13 +82,13 @@ python src/efficientrag_qa.py \
 ## Evaluation
 Retrieve results
 ```bash
-python src/evaluation/retrieve.py --fpath <<MODEL_INFERENCE_RESULT_AFTER_PRUNING>>
+python src/evaluation/retrieve.py --fpath <<QA_RESULT>>
 ```
 
 Correctness
 ```bash
 python src/evaluation/correctness.py \
-    --fpath <<MODEL_INFERENCE_RESULT_AFTER_PRUNING>>
+    --fpath <<QA_RESULT>>
     --model llama-8b-instruct
 ```
 
