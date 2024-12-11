@@ -1,7 +1,7 @@
 # EfficientRAG-Pro CS291A Project
 This is a final project of UCSB CS291A 2024 Fall.
 
-To run this project, you need to set up following the original Efficient RAG 
+To run this project, you need to set up following the original EfficientRAG.
 
 ## Setup
 
@@ -63,10 +63,18 @@ python src/efficientrag_retrieve.py \
     --topk 10 \
 ```
 
+Text Rank Pruning
+
+```bash
+python src/textrank.py --fpath <<MODEL_INFERENCE_RESULT>> --top_k 10
+```
+You can try different top_k to control the pruning proportion.
+
+
 Use LLaMA-3-8B-Instruct as generator
 ```bash
 python src/efficientrag_qa.py \
-    --fpath <<MODEL_INFERENCE_RESULT>> \
+    --fpath <<MODEL_INFERENCE_RESULT_AFTER_PRUNING>> \
     --model llama-8B \
     --dataset musique
 ```
@@ -74,14 +82,8 @@ python src/efficientrag_qa.py \
 ## Evaluation
 Retrieve results
 ```bash
-python src/evaluation/retrieve.py --fpath <<MODEL_INFERENCE_RESULT>>
+python src/evaluation/retrieve.py --fpath <<MODEL_INFERENCE_RESULT_AFTER_PRUNING>>
 ```
-
-Pruning
-```bash
-python src/textrank.py --fpath <<MODEL_INFERENCE_RESULT>> --top_k 10
-```
-You can try different top_k to control the pruning proportion.
 
 Correctness
 ```bash
