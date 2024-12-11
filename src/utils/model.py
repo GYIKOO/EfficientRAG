@@ -26,11 +26,13 @@ def ask_model(
         time.sleep(sleep_time)
     if mode == "chat":
         result = model.chat(prompt, system_msg, json_mode=(type == "json"))
-        # print(result)
+        # print('chat result', result)
     elif mode == "completion":
         result = model.complete(prompt)
+    # print('result', result)
     parser = get_type_parser(type)
     info = parser(result)
+    print('after parse', info)
     if check_if_valid is not None and not check_if_valid(info):
         print(f"Invalid response {info}")
         raise ValueError("Invalid response")
@@ -84,10 +86,44 @@ def get_type_parser(type: str) -> Callable:
         # pattern = r"```json(.*?)```"
         pattern = r"{.*?}"
         matches = re.findall(pattern, result, re.DOTALL)
+        # print('original result', result)
         if matches:
             result = matches[0].strip()
-        return json.loads(result)
+        if '```json' in result:
+            result = result.replace('```json', '').replace('```', '')
 
+        # 在尝试 json.loads() 之前，确保结果字符串格式正确
+        result_fixed = result.replace(',"decomposed_questions",', ',"decomposed_questions": {')
+
+        try:
+            # 修复常见的 JSON 格式错误
+            # Replace property names with double quotes, but preserve single quotes in text content
+            # 首先替换属性名的单引号为双引号
+            result = re.sub(r"([{,]\s*)\'([^\']+?)\'(\s*:)", r'\1"\2"\3', result_fixed)
+            # 然后替换字符串值的外层单引号为双引号，但保留内部的单引号
+            result = re.sub(r':\s*\'([^\']*(?:\'[^\']*)*?)\'', r': "\1"', result)
+            # 3. 处理数组，支持数字和带引号的字符串
+            def process_array(match):
+                if not match.group(1).strip():
+                    return ': []'
+                # 分割时同时处理有无空格的情况
+                elements = [x.strip() for x in re.split(r'\s*,\s*', match.group(1)) if x.strip()]
+                processed_elements = []
+                for elem in elements:
+                    # 移除可能存在的引号（单引号或双引号）
+                    elem = elem.strip("'\"")
+                    # 添加双引号
+                    processed_elements.append(f'"{elem}"')
+                return ': [' + ','.join(processed_elements) + ']'
+            
+            # 使用更精确的正则表达式匹配数组
+            result = re.sub(r':\s*\[([\d\s,\'\"]*?)\]', process_array, result)
+            json.loads(result)
+        except Exception as e:
+            print('final result', result)
+            print('here')
+            print(e)
+        return json.loads(result)
     def text_parser(result: str):
         return result
 
